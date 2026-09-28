@@ -80,3 +80,40 @@ export const ErrorState: Story = {
     await expect(canvas.getByRole('button', { name: 'ลองอีกครั้ง' })).toBeVisible();
   },
 };
+
+/**
+ * AC1 — Search patient by HN (interaction test).
+ *
+ * Given PatientSearch is shown standalone
+ * When staff types HN "65000123"
+ * And presses ค้นหา
+ * Then the patient "Somchai Jaidee" is shown
+ *
+ * searchFn is set to undefined so the component uses its own default: the real mock service
+ * (src/services/patient-service.ts → searchPatients) over the fixed data in src/mocks/patients.ts.
+ */
+export const AC1SearchByHN: Story = {
+  name: 'AC1 — Search by HN 65000123 finds Somchai Jaidee',
+  args: {
+    searchFn: undefined,
+  },
+  play: async ({ canvasElement, step }) => {
+    const canvas = within(canvasElement);
+    const input = canvas.getByLabelText('HN หรือชื่อผู้ป่วย');
+
+    await step('When staff types HN "65000123"', async () => {
+      await userEvent.type(input, '65000123');
+      await expect(input).toHaveValue('65000123');
+    });
+
+    await step('And presses ค้นหา', async () => {
+      await userEvent.click(canvas.getByRole('button', { name: 'ค้นหา' }));
+    });
+
+    await step('Then the patient "Somchai Jaidee" is shown', async () => {
+      const list = await canvas.findByRole('list', { name: 'ผลการค้นหาผู้ป่วย' });
+      await expect(within(list).getByText('Somchai Jaidee')).toBeVisible();
+      await expect(within(list).getByText('65000123')).toBeVisible();
+    });
+  },
+};
