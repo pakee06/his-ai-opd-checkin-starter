@@ -1,5 +1,158 @@
 @import "tailwindcss";
 
+/*
+ * Suth design tokens — transcribed from docs/design/design-reference/DESIGN.md (v1.301.3).
+ * Do not add values here that are not in DESIGN.md. Aliases point at the primary scale
+ * where DESIGN.md gives the same hex, so each hex lives in one place.
+ * @theme entries generate Tailwind utilities (bg-primary-default, rounded-btn, font-body, ...).
+ */
+@theme {
+  /* §2 Primary scale */
+  --color-primary-50: #EEF8FB;
+  --color-primary-100: #DCF1F6;
+  --color-primary-200: #B9E2EC;
+  --color-primary-300: #84C5D4;
+  --color-primary-400: #4C9FB2;
+  --color-primary-500: #127486;
+  --color-primary-600: #0E5D6C;
+  --color-primary-700: #0B4955;
+  --color-primary-800: #08363F;
+  --color-primary-900: #05242A;
+  --color-primary-1000: #05242A;
+
+  /* front matter: theme */
+  --color-theme-primary: var(--color-primary-600);
+  --color-theme-background: var(--color-primary-50);
+
+  /* front matter: colors.primary / on-primary */
+  --color-primary-default: var(--color-primary-600);
+  --color-primary-active: var(--color-primary-600);
+  --color-primary-hover: var(--color-primary-700);
+  --color-primary-faded: var(--color-primary-100);
+  --color-on-primary: #ffffff;
+
+  /* front matter: colors.success / warning / danger */
+  --color-success-default: #1bb253;
+  --color-success-hover: #04a06f;
+  --color-success-disable: #90e6c2;
+  --color-success-faded: #d6ffee;
+  --color-warning-default: #ffc514;
+  --color-warning-hover: #ffc533;
+  --color-warning-disable: #ffe599;
+  --color-warning-faded: #fff5d8;
+  --color-danger-default: #ff4343;
+  --color-danger-hover: #f04f43;
+  --color-danger-disable: #ffb8b3;
+  --color-danger-faded: #ffe6e3;
+
+  /* front matter: colors.text */
+  --color-text-base: #0F172A;
+  --color-text-mid: #475569;
+  --color-text-low: #94A3B8;
+  --color-text-title: var(--color-primary-700);
+
+  /* §2 Surfaces */
+  --color-surface-app: #eff6ff;
+  --color-surface-card: #FFFFFF;
+  --color-sidebar: var(--color-primary-600);
+  --color-sidebar-active: var(--color-primary-800);
+  --color-on-sidebar: #ffffff;
+  --color-table-header: var(--color-primary-300);
+
+  /* §2 Status/Tag colors (the paired "low" variants have no values in DESIGN.md) */
+  --color-tag-red: #fc5a5a;
+  --color-tag-green: #3dd598;
+  --color-tag-light-green: #82c43c;
+  --color-tag-orange: #ff974a;
+  --color-tag-yellow: #ffc542;
+  --color-tag-magenta: #ff9ad5;
+  --color-tag-purple: #a461d8;
+  --color-tag-light-blue: #50b5ff;
+  --color-tag-blue: #1b85f3;
+
+  /* §7 Component colors */
+  --color-button-primary: var(--color-primary-default);
+  --color-button-primary-disabled: var(--color-primary-300);
+  --color-table-row: #ffffff;
+  --color-table-row-alt: #F8FAFC;
+  --color-table-row-selected: var(--color-primary-200);
+  --color-input-border: #CBD5E1;
+  --color-input-border-hover: var(--color-primary-400);
+  --color-input-border-focus: var(--color-primary-500);
+  --color-avatar: var(--color-primary-300);
+  --color-avatar-active-border: var(--color-primary-500);
+  --color-sidebar-popup: var(--color-primary-50);
+
+  /* front matter: typography */
+  /* DESIGN.md names first, then the same fonts self-hosted via next/font/local (see layout.tsx). */
+  --font-body: 'NotoSansThai', 'Inter', var(--font-noto-sans-thai), var(--font-inter);
+  --font-print: 'Sarabun', 'Inter';
+  --font-password: 'Verdana';
+  --font-weight-thin: 100;
+  --font-weight-extralight: 200;
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --font-weight-black: 900;
+
+  /* §3 Type scale — only the sizes DESIGN.md states explicitly */
+  --text-xxs: 10px;
+  --text-9xl: 128px;
+  --text-card-header: 1rem;
+  --text-card-header-sm: 0.875rem;
+  --text-button: 14px;
+
+  /* front matter: theme.rounded + rounded, §6 Shapes */
+  --radius-btn: 6px;
+  --radius-btn-lg: 8px;
+  --radius-input: 6px;
+  --radius-card: 8px;
+  --radius-card-sm: 6px;
+  --radius-checkbox: 4px;
+  --radius-none: 0;
+  --radius-sm: 2px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-3xl: 24px;
+
+  /* §5 Elevation */
+  --shadow-card: inset 0px 0px 4px 0px #0000001a;
+  --shadow-card-sm: inset 0px 0px 2px 0px #0000001a;
+
+  /* §4 Breakpoints */
+  --breakpoint-xs: 480px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+  --breakpoint-full-hd: 1920px;
+  --breakpoint-2k: 2560px;
+  --breakpoint-4k: 3840px;
+}
+
+/*
+ * Spacing, full radius and layout sizes stay as plain custom properties on purpose:
+ * declaring --spacing-sm / --spacing-md inside @theme would collide with Tailwind's
+ * size keywords (max-w-sm, max-w-md). Use them as p-(--spacing-main), gap-(--spacing-form-row-gap), ...
+ */
+:root {
+  --spacing-sm: 3px;
+  --spacing-md: 6px;
+  --spacing-main: 10px;
+  --spacing-form-row-gap: 8px;
+  --spacing-form-column-gap: 16px;
+  --radius-full: 100%;
+  --layout-sidebar-width: 70px;
+  --layout-footer-height: 30px;
+  --layout-max-content-width: 1280px;
+}
+
 :root {
   --background: #f6f8f7;
   --foreground: #19332e;
@@ -11,4 +164,7 @@
 
 html, body { margin: 0; min-height: 100%; }
 body { background: var(--background); color: var(--foreground); font-family: Arial, "Noto Sans Thai", sans-serif; }
-button, input, select, textarea { font: inherit; }
+/* In @layer base so token utilities (text-button, text-card-header-sm) can override it on controls. */
+@layer base {
+  button, input, select, textarea { font: inherit; }
+}
